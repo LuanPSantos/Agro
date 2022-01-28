@@ -6,15 +6,19 @@ using Unity.Netcode;
 
 public class CameraManager : NetworkBehaviour
 {
-
+    public static CameraManager Singleton;
     public CinemachineTargetGroup targetGroup;
 
+    void Awake()
+    {
+        StartSingleton();
+    }
     void Start()
     {
-        SpawnManager.Singleton.PlayersSpawned += OnPlayersSpawned;
+        //SpawnManager.Singleton.PlayersSpawned += PlayersSpawnedHandle;
     }
 
-    private void OnPlayersSpawned(ulong one, ulong two)
+    private void PlayersSpawnedHandle(ulong one)
     {
         if (!IsServer || !IsHost) return;
 
@@ -22,6 +26,10 @@ public class CameraManager : NetworkBehaviour
 
     }
 
+    public void AddToTargetGroup(Transform playerTransform)
+    {
+        targetGroup.AddMember(playerTransform, 1, 1);
+    }
 
     [ClientRpc]
     private void LookToPlayersClientRpc()
@@ -31,6 +39,18 @@ public class CameraManager : NetworkBehaviour
         foreach(PlayerController player in players)
         {
             targetGroup.AddMember(player.transform, 1, 1);
+        }
+    }
+
+    private void StartSingleton()
+    {
+        if (Singleton == null)
+        {
+            Singleton = this;
+        }
+        else
+        {
+            Destroy(this);
         }
     }
 }

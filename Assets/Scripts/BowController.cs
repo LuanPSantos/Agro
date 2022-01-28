@@ -7,7 +7,7 @@ using System;
 public class BowController : NetworkBehaviour
 {
     public static event Action<float> LaunchForcePercentChanged;
-    public float timeToFullLoadLauchForce = 0.1f;
+    public float timeToFullLoadLauchForce = 3f;
     public float releaseThreshold = 0.01f;
     public int maxLaunchForce = 2000;
     public Transform bowTransform;

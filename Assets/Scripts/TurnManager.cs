@@ -18,8 +18,13 @@ public class TurnManager : NetworkBehaviour
 
     void Start()
     {
-        SpawnManager.Singleton.PlayersSpawned += StartTurn;
-        ArrowBehaviour.ArrowCollided += SwitchTurn;
+        SpawnManager.Singleton.PlayersSpawned += PlayersSpawnedHandle;
+        ArrowBehaviour.ArrowCollided += ArrowCollidedHandle;
+    }
+
+    private void PlayersSpawnedHandle(ulong playerOne, ulong playerTwo)
+    {
+        StartTurn(playerOne, playerTwo);
     }
 
     private void StartTurn(ulong playerOne, ulong playerTwo)
@@ -33,6 +38,11 @@ public class TurnManager : NetworkBehaviour
             .SetCanPlay(true);
 
         currentPlayerClientId.Value = playerOne;
+    }
+
+    private void ArrowCollidedHandle()
+    {
+        SwitchTurn();
     }
 
     private void SwitchTurn()

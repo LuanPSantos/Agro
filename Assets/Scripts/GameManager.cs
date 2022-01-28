@@ -10,15 +10,18 @@ public class GameManager : NetworkBehaviour
 {
     public static GameManager Singleton;
 
-    public event Action<ulong, ulong> PlayersLoaded;
+    public event Action<ulong, ulong> SceneLoadedForPlayers;
 
     private const string gameplayScene = "Gameplay";
     void Awake()
     {
         StartSingleton();
-        DontDestroyOnLoad(gameObject);
+        DontDestroyOnLoad(gameObject);     
+    }
 
-        LobbyManager.Singleton.PlayersConnected += PlayersConnectedHandle;    
+    void Start()
+    {
+        LobbyManager.Singleton.PlayersConnected += PlayersConnectedHandle;
     }
 
     private void PlayersConnectedHandle(ulong playerOneClientId, ulong playerTwoClientId)
@@ -32,7 +35,7 @@ public class GameManager : NetworkBehaviour
 
         if(clientsCompleted.Count == 2)
         {
-            PlayersLoaded?.Invoke(clientsCompleted[0], clientsCompleted[1]);
+            SceneLoadedForPlayers?.Invoke(clientsCompleted[0], clientsCompleted[1]);
         }
     }
 

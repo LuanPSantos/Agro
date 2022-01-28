@@ -16,7 +16,7 @@ public class PlayerController : NetworkBehaviour
         bowController = GetComponent<BowController>();
     }
 
-    private void Update()
+    void Update()
     {
         if (IsOwner || IsServer || IsHost)
         {
@@ -38,5 +38,13 @@ public class PlayerController : NetworkBehaviour
         if (!IsServer || !IsHost) return;
 
         this.canPlay.Value = canPlay;
+    }
+
+    public override void OnNetworkSpawn()
+    {
+        if(IsClient)
+        {
+            CameraManager.Singleton.AddToTargetGroup(transform);
+        }
     }
 }
