@@ -4,7 +4,7 @@ using UnityEngine;
 using System;
 using Unity.Netcode;
 
-public class ArrowBehaviour : MonoBehaviour
+public class ArrowBehaviour : NetworkBehaviour
 {
     public static event Action ArrowCollided;
 
@@ -27,6 +27,8 @@ public class ArrowBehaviour : MonoBehaviour
 
     void OnCollisionEnter2D(Collision2D collision)
     {
+        RemoveArrowToTargetGroupClientRpc();
+        
         hasCollided = true;
         DisablePhysics();
         ArrowCollided?.Invoke();
@@ -39,6 +41,12 @@ public class ArrowBehaviour : MonoBehaviour
         arrowCollider.enabled = false;
     }
 
+    [ClientRpc]
+    private void RemoveArrowToTargetGroupClientRpc()
+    {
+        CameraManager.Singleton.RemoveArrowToTargetGroup();
+    }
+
     private void AlignRotation()
     {
         float angle = Mathf.Atan2(rb.velocity.y, rb.velocity.x) * Mathf.Rad2Deg;
@@ -49,5 +57,15 @@ public class ArrowBehaviour : MonoBehaviour
     {
         rb.velocity = Vector2.zero;
         rb.isKinematic = true;
+    }
+
+     public override void OnNetworkSpawn()
+    {
+        if(IsClient)
+        {
+            NetworkLog.LogInfoServer("OnNetworkSpawn arrow");
+            CameraManager.Singleton.RemovePlayersFromGroup();
+            CameraManager.Singleton.AddArrowToTargetGroup(transform);
+        }
     }
 }

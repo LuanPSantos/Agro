@@ -9,37 +9,60 @@ public class CameraManager : NetworkBehaviour
     public static CameraManager Singleton;
     public CinemachineTargetGroup targetGroup;
 
+    private Transform[] playersTransforms = new Transform[2];
+    private Transform arrowTransform;
+
     void Awake()
     {
         StartSingleton();
     }
     void Start()
     {
-        //SpawnManager.Singleton.PlayersSpawned += PlayersSpawnedHandle;
+   
     }
 
-    private void PlayersSpawnedHandle(ulong one)
+    public void AddPlayerTransform(ulong playerClientId, Transform playerTransform)
     {
-        if (!IsServer || !IsHost) return;
+        if (!IsClient) return;
 
-        LookToPlayersClientRpc();
-
+        playersTransforms[playerClientId] = playerTransform;
+        NetworkLog.LogInfoServer("AddPlayerTransform id=" + playerClientId + " transform="+ playersTransforms[playerClientId]);
     }
 
-    public void AddToTargetGroup(Transform playerTransform)
+    public void AddPlayerToTargetGroup(ulong playerClientId)
     {
-        targetGroup.AddMember(playerTransform, 1, 1);
+        if (!IsClient) return;
+
+        NetworkLog.LogInfoServer("AddPlayerToTargetGroupClientRpc id=" + playerClientId);
+        targetGroup.AddMember(playersTransforms[playerClientId], 1, 1);
     }
 
-    [ClientRpc]
-    private void LookToPlayersClientRpc()
+    public void RemovePlayerFromTargetGroup(ulong playerClientId)
     {
-        PlayerController[] players = FindObjectsOfType<PlayerController>();
+        if (!IsClient) return;
 
-        foreach(PlayerController player in players)
+        NetworkLog.LogInfoServer("RemovePlayerFromTargetGroupClientRpc id=" + playerClientId);
+
+        targetGroup.RemoveMember(playersTransforms[playerClientId]);
+    }
+
+    public void RemovePlayersFromGroup()
+    {
+        foreach(Transform playerTransform in playersTransforms)
         {
-            targetGroup.AddMember(player.transform, 1, 1);
+            targetGroup.RemoveMember(playerTransform);
         }
+    }
+
+    public void AddArrowToTargetGroup(Transform currentArrowTransform)
+    {
+        arrowTransform = currentArrowTransform;
+        targetGroup.AddMember(arrowTransform, 1, 1);
+    }
+
+    public void RemoveArrowToTargetGroup()
+    {
+        targetGroup.RemoveMember(arrowTransform);
     }
 
     private void StartSingleton()

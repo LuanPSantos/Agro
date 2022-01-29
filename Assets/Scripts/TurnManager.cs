@@ -33,6 +33,8 @@ public class TurnManager : NetworkBehaviour
     
         NetworkLog.LogInfoServer("StartTurn for players with clientId=" + playerOne + " and clientId=" + playerTwo);
 
+        RemovePlayerFromTargetGroupClientRpc(playerTwo);
+
         NetworkManager.Singleton.ConnectedClients[playerOne]
             .PlayerObject.GetComponent<PlayerController>()
             .SetCanPlay(true);
@@ -52,6 +54,9 @@ public class TurnManager : NetworkBehaviour
         ulong nextPlayerClientId = GetNextPlayerClientId();
         NetworkLog.LogInfoServer("SwitchTurn " + nextPlayerClientId);
 
+        RemovePlayerFromTargetGroupClientRpc(currentPlayerClientId.Value);
+        AddPlayerFromTargetGroupClientRpc(nextPlayerClientId);
+
         NetworkManager.Singleton.ConnectedClients[currentPlayerClientId.Value]
             .PlayerObject.GetComponent<PlayerController>()
             .SetCanPlay(false);
@@ -70,6 +75,18 @@ public class TurnManager : NetworkBehaviour
             return (currentPlayerClientId.Value + 1) % numbersOfPlayers;
         }
         return serverOffset + currentPlayerClientId.Value % numbersOfPlayers;
+    }
+
+    [ClientRpc]
+    private void RemovePlayerFromTargetGroupClientRpc(ulong clientId)
+    {
+        CameraManager.Singleton.RemovePlayerFromTargetGroup(clientId);
+    }
+
+    [ClientRpc]
+    private void AddPlayerFromTargetGroupClientRpc(ulong clientId)
+    {
+        CameraManager.Singleton.AddPlayerToTargetGroup(clientId);
     }
 
     private void StartSingleton()

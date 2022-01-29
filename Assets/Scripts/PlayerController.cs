@@ -9,6 +9,7 @@ public class PlayerController : NetworkBehaviour
     private BowController bowController;
     private NetworkVariable<bool> canPlay = new NetworkVariable<bool>(false);
     private Collider2D playerCollider;
+    public NetworkVariable<ulong> clientId = new NetworkVariable<ulong>((ulong) 0);
 
     void Start()
     {
@@ -44,7 +45,9 @@ public class PlayerController : NetworkBehaviour
     {
         if(IsClient)
         {
-            CameraManager.Singleton.AddToTargetGroup(transform);
+            NetworkLog.LogInfoServer("OnNetworkSpawn id=" + clientId.Value);
+            CameraManager.Singleton.AddPlayerTransform(clientId.Value, transform);
+            CameraManager.Singleton.AddPlayerToTargetGroup(clientId.Value);
         }
     }
 }

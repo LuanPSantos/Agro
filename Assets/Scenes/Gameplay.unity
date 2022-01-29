@@ -802,7 +802,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   minDistanceFromOrigin: 5
-  maxDistanceFromOrigin: 40
+  maxDistanceFromOrigin: 20
   verticalPosition: 1.4
   playerPrefab: {fileID: 4625966900436365820, guid: 2ce216d854b4d114b8acefecec8fde27, type: 3}
 --- !u!4 &2046648761

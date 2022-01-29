@@ -865,15 +865,15 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 54c9647dc784a46bca664910f182491e, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  SyncPositionX: 0
-  SyncPositionY: 0
-  SyncPositionZ: 0
-  SyncRotAngleX: 0
-  SyncRotAngleY: 0
+  SyncPositionX: 1
+  SyncPositionY: 1
+  SyncPositionZ: 1
+  SyncRotAngleX: 1
+  SyncRotAngleY: 1
   SyncRotAngleZ: 1
-  SyncScaleX: 0
-  SyncScaleY: 0
-  SyncScaleZ: 0
+  SyncScaleX: 1
+  SyncScaleY: 1
+  SyncScaleZ: 1
   PositionThreshold: 0.001
   RotAngleThreshold: 0.01
   ScaleThreshold: 0.01
@@ -1192,6 +1192,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 460ab4d141f001d49bcfd366aed2bca7, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  clientId:
+    m_InternalValue: 0
 --- !u!114 &4445633703474252653
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -1206,7 +1208,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   timeToFullLoadLauchForce: 3
   releaseThreshold: 0.01
-  maxLaunchForce: 1000
+  maxLaunchForce: 2000
   bowTransform: {fileID: 4625966899559826055}
   arrow: {fileID: 707497891225597650, guid: 60bfe176cb3970d4584d31a11cc4656a, type: 3}
 --- !u!70 &-8970094022995998089
@@ -1240,12 +1242,12 @@ MonoBehaviour:
   SyncPositionX: 1
   SyncPositionY: 1
   SyncPositionZ: 1
-  SyncRotAngleX: 0
-  SyncRotAngleY: 0
-  SyncRotAngleZ: 0
-  SyncScaleX: 0
-  SyncScaleY: 0
-  SyncScaleZ: 0
+  SyncRotAngleX: 1
+  SyncRotAngleY: 1
+  SyncRotAngleZ: 1
+  SyncScaleX: 1
+  SyncScaleY: 1
+  SyncScaleZ: 1
   PositionThreshold: 0.001
   RotAngleThreshold: 0.01
   ScaleThreshold: 0.01
