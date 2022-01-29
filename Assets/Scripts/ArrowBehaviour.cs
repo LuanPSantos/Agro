@@ -26,9 +26,7 @@ public class ArrowBehaviour : NetworkBehaviour
     }
 
     void OnCollisionEnter2D(Collision2D collision)
-    {
-        RemoveArrowToTargetGroupClientRpc();
-        
+    {      
         hasCollided = true;
         DisablePhysics();
         ArrowCollided?.Invoke();
@@ -39,12 +37,6 @@ public class ArrowBehaviour : NetworkBehaviour
         }
 
         arrowCollider.enabled = false;
-    }
-
-    [ClientRpc]
-    private void RemoveArrowToTargetGroupClientRpc()
-    {
-        CameraManager.Singleton.RemoveArrowToTargetGroup();
     }
 
     private void AlignRotation()

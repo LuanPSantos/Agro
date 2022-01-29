@@ -35,11 +35,11 @@ public class SpawnManager : NetworkBehaviour
 
     private float CalculateSpawnDistance()
     {
-        float xDistance = UnityEngine.Random.Range(minDistanceFromOrigin, maxDistanceFromOrigin);
+        float distance = UnityEngine.Random.Range(minDistanceFromOrigin, maxDistanceFromOrigin);
 
-        NetworkLog.LogInfoServer("CalculateSpawnPosition xDistance=" + xDistance);
+        NetworkLog.LogInfoServer("CalculateSpawnPosition distance=" + distance);
 
-        return xDistance;
+        return distance;
     }
 
     private void SpawnPlayer(ulong clientId, Vector2 position, Vector2 scale)

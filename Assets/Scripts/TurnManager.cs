@@ -24,46 +24,43 @@ public class TurnManager : NetworkBehaviour
 
     private void PlayersSpawnedHandle(ulong playerOne, ulong playerTwo)
     {
-        StartTurn(playerOne, playerTwo);
+        StartCoroutine(StartTurn(playerOne, playerTwo));
     }
 
-    private void StartTurn(ulong playerOne, ulong playerTwo)
+    private IEnumerator StartTurn(ulong playerOne, ulong playerTwo)
     {
-        if (!IsServer || !IsHost) return;
-    
+        if (!IsServer || !IsHost) yield return null;
+
+        yield return new WaitForSeconds(3);
+
         NetworkLog.LogInfoServer("StartTurn for players with clientId=" + playerOne + " and clientId=" + playerTwo);
 
         RemovePlayerFromTargetGroupClientRpc(playerTwo);
 
-        NetworkManager.Singleton.ConnectedClients[playerOne]
-            .PlayerObject.GetComponent<PlayerController>()
-            .SetCanPlay(true);
+        SetPlayerTurn(playerOne, true);
 
         currentPlayerClientId.Value = playerOne;
     }
 
     private void ArrowCollidedHandle()
     {
-        SwitchTurn();
+        StartCoroutine(SwitchTurn());
     }
 
-    private void SwitchTurn()
+    private IEnumerator SwitchTurn()
     {
-        if (!IsServer || !IsHost) return;
+        if (!IsServer || !IsHost) yield return null;
+
+        yield return new WaitForSeconds(3);
 
         ulong nextPlayerClientId = GetNextPlayerClientId();
         NetworkLog.LogInfoServer("SwitchTurn " + nextPlayerClientId);
 
-        RemovePlayerFromTargetGroupClientRpc(currentPlayerClientId.Value);
+        RemoveArrowToTargetGroupClientRpc();
         AddPlayerFromTargetGroupClientRpc(nextPlayerClientId);
 
-        NetworkManager.Singleton.ConnectedClients[currentPlayerClientId.Value]
-            .PlayerObject.GetComponent<PlayerController>()
-            .SetCanPlay(false);
-
-        NetworkManager.Singleton.ConnectedClients[nextPlayerClientId]
-            .PlayerObject.GetComponent<PlayerController>()
-            .SetCanPlay(true);
+        SetPlayerTurn(currentPlayerClientId.Value, false);
+        SetPlayerTurn(nextPlayerClientId, true);
 
         currentPlayerClientId.Value = nextPlayerClientId;
     }
@@ -87,6 +84,19 @@ public class TurnManager : NetworkBehaviour
     private void AddPlayerFromTargetGroupClientRpc(ulong clientId)
     {
         CameraManager.Singleton.AddPlayerToTargetGroup(clientId);
+    }
+
+    [ClientRpc]
+    private void RemoveArrowToTargetGroupClientRpc()
+    {
+        CameraManager.Singleton.RemoveArrowToTargetGroup();
+    }
+
+    private void SetPlayerTurn(ulong playerClientId, bool canPlay)
+    {
+        NetworkManager.Singleton.ConnectedClients[playerClientId]
+            .PlayerObject.GetComponent<PlayerController>()
+            .SetCanPlay(canPlay);
     }
 
     private void StartSingleton()

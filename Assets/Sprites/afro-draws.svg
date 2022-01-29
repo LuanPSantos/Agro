@@ -23,9 +23,9 @@
      inkscape:pagecheckerboard="0"
      inkscape:document-units="mm"
      showgrid="false"
-     inkscape:zoom="1.0998546"
-     inkscape:cx="479.60885"
-     inkscape:cy="753.28139"
+     inkscape:zoom="0.27496365"
+     inkscape:cx="1340.1771"
+     inkscape:cy="307.31335"
      inkscape:window-width="2560"
      inkscape:window-height="1377"
      inkscape:window-x="-8"
@@ -39,58 +39,43 @@
      inkscape:groupmode="layer"
      id="layer1">
     <rect
-       style="fill:#ffffff;fill-opacity:1;stroke:#000000;stroke-width:1.47214;stroke-miterlimit:4;stroke-dasharray:none;stroke-opacity:1"
+       style="fill:#000000;fill-opacity:1;stroke:#000000;stroke-width:4.41642;stroke-miterlimit:4;stroke-dasharray:none;stroke-opacity:1"
        id="rect846"
-       width="24.986198"
-       height="24.986195"
-       x="3.8168776"
-       y="268.83749"
+       width="74.958672"
+       height="74.958664"
+       x="-38.012157"
+       y="237.36531"
        ry="0"
-       inkscape:export-filename="C:\Users\santo\Desktop\sprites-agro.png"
+       inkscape:export-filename="D:\Documents\Projects\Agro\Assets\Sprites\sprites-agro.png"
        inkscape:export-xdpi="96"
        inkscape:export-ydpi="96" />
     <circle
-       style="fill:#ffffff;fill-opacity:1;stroke:#000000;stroke-width:1.32292;stroke-miterlimit:4;stroke-dasharray:none;stroke-opacity:1"
+       style="fill:#000000;fill-opacity:1;stroke:#000000;stroke-width:3.77976;stroke-miterlimit:4;stroke-dasharray:none;stroke-opacity:1"
        id="path1372"
-       cx="19.23424"
-       cy="192.37645"
-       r="13.229167"
-       inkscape:export-filename="C:\Users\santo\Desktop\sprites-agro.png"
+       cx="4.8122177"
+       cy="47.133713"
+       r="37.797657"
+       inkscape:export-filename="D:\Documents\Projects\Agro\Assets\Sprites\sprites-agro.png"
        inkscape:export-xdpi="96"
        inkscape:export-ydpi="96" />
     <path
-       style="fill:none;stroke:#000000;stroke-width:1.32292;stroke-linecap:butt;stroke-linejoin:miter;stroke-miterlimit:4;stroke-dasharray:none;stroke-opacity:1"
-       d="m 19.365468,206.89378 v 26.45833 z"
-       id="path1407"
-       inkscape:export-filename="C:\Users\santo\Desktop\sprites-agro.png"
-       inkscape:export-xdpi="96"
-       inkscape:export-ydpi="96" />
-    <path
-       style="fill:none;stroke:#000000;stroke-width:1.32292;stroke-linecap:butt;stroke-linejoin:miter;stroke-miterlimit:4;stroke-dasharray:none;stroke-opacity:1"
-       d="m 12.352881,218.5717 v 21.16667 z"
+       style="fill:none;stroke:#000000;stroke-width:11.9063;stroke-linecap:round;stroke-linejoin:round;stroke-miterlimit:4;stroke-dasharray:none;stroke-opacity:1"
+       d="m -17.455931,126.58321 v 63.50008 z"
        id="path1407-0"
-       inkscape:export-filename="C:\Users\santo\Desktop\sprites-agro.png"
+       inkscape:export-filename="D:\Documents\Projects\Agro\Assets\Sprites\sprites-agro.png"
        inkscape:export-xdpi="96"
        inkscape:export-ydpi="96" />
     <path
-       style="fill:none;stroke:#000000;stroke-width:2.64583;stroke-linecap:butt;stroke-linejoin:miter;stroke-miterlimit:4;stroke-dasharray:none;stroke-opacity:1"
-       d="m 50.218754,178.2424 c 39.01714,9.67519 36.29444,67.76368 1e-5,79.37499 36.2849,-11.61429 39.01893,-69.68802 -1e-5,-79.37499 z"
-       id="path1407-0-9-9-3-6"
-       sodipodi:nodetypes="ccc"
-       inkscape:export-filename="C:\Users\santo\Desktop\sprites-agro.png"
-       inkscape:export-xdpi="96"
-       inkscape:export-ydpi="96" />
-    <path
-       style="fill:none;stroke:#000000;stroke-width:1.32292;stroke-linecap:butt;stroke-linejoin:miter;stroke-miterlimit:4;stroke-dasharray:none;stroke-opacity:1"
-       d="m 27.785142,228.08288 v 26.45833 z"
+       style="fill:none;stroke:#000000;stroke-width:11.9063;stroke-linecap:round;stroke-linejoin:round;stroke-miterlimit:4;stroke-dasharray:none;stroke-opacity:1"
+       d="m 26.675841,116.51019 v 79.37508 z"
        id="path1489"
-       inkscape:export-filename="C:\Users\santo\Desktop\sprites-agro.png"
+       inkscape:export-filename="D:\Documents\Projects\Agro\Assets\Sprites\sprites-agro.png"
        inkscape:export-xdpi="96"
        inkscape:export-ydpi="96" />
     <g
        id="g3914"
-       transform="translate(-76.498748,94.781468)"
-       inkscape:export-filename="C:\Users\santo\Desktop\sprites-agro.png"
+       transform="matrix(3.0000032,0,0,3.0000032,-278.95929,-284.80333)"
+       inkscape:export-filename="D:\Documents\Projects\Agro\Assets\Sprites\sprites-agro.png"
        inkscape:export-xdpi="96"
        inkscape:export-ydpi="96">
       <path
@@ -108,20 +93,27 @@
          sodipodi:nodetypes="ccccccc" />
     </g>
     <path
-       style="fill:none;stroke:#000000;stroke-width:2.64583;stroke-linecap:butt;stroke-linejoin:miter;stroke-miterlimit:4;stroke-dasharray:none;stroke-opacity:1"
-       d="m 37.768249,270.39181 c 0.696272,0 26.458333,0 26.458333,0"
+       style="fill:none;stroke:#000000;stroke-width:7.9375;stroke-linecap:butt;stroke-linejoin:miter;stroke-miterlimit:4;stroke-dasharray:none;stroke-opacity:1"
+       d="m 63.842062,242.02825 c 2.08882,0 79.375088,0 79.375088,0"
        id="path3949"
-       inkscape:export-filename="C:\Users\santo\Desktop\sprites-agro.png"
+       inkscape:export-filename="D:\Documents\Projects\Agro\Assets\Sprites\sprites-agro.png"
        inkscape:export-xdpi="96"
        inkscape:export-ydpi="96" />
     <ellipse
-       style="fill:#ffffff;fill-opacity:1;stroke:none;stroke-width:3.38387;stroke-miterlimit:4;stroke-dasharray:none;stroke-opacity:1"
+       style="fill:#ffffff;fill-opacity:1;stroke:none;stroke-width:10.1516;stroke-miterlimit:4;stroke-dasharray:none;stroke-opacity:1"
        id="path4071"
-       cx="81.068718"
-       cy="269.90997"
-       rx="4.922647"
-       ry="4.9226489"
-       inkscape:export-filename="C:\Users\santo\Desktop\sprites-agro.png"
+       cx="193.74361"
+       cy="240.58275"
+       rx="14.767957"
+       ry="14.767962"
+       inkscape:export-filename="D:\Documents\Projects\Agro\Assets\Sprites\sprites-agro.png"
+       inkscape:export-xdpi="96"
+       inkscape:export-ydpi="96" />
+    <path
+       id="path1187"
+       style="fill:none;stroke:#000000;stroke-width:11.9063;stroke-linecap:round;stroke-linejoin:round;stroke-miterlimit:4;stroke-dasharray:none;stroke-opacity:1"
+       d="m 201.68645,24.105977 a 95.262689,95.262689 0 0 1 60.61954,88.740253 v 0 a 95.262689,95.262689 0 0 1 -60.59563,88.73091"
+       inkscape:export-filename="D:\Documents\Projects\Agro\Assets\Sprites\sprites-agro.png"
        inkscape:export-xdpi="96"
        inkscape:export-ydpi="96" />
   </g>

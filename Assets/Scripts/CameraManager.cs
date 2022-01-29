@@ -16,10 +16,6 @@ public class CameraManager : NetworkBehaviour
     {
         StartSingleton();
     }
-    void Start()
-    {
-   
-    }
 
     public void AddPlayerTransform(ulong playerClientId, Transform playerTransform)
     {
@@ -34,7 +30,7 @@ public class CameraManager : NetworkBehaviour
         if (!IsClient) return;
 
         NetworkLog.LogInfoServer("AddPlayerToTargetGroupClientRpc id=" + playerClientId);
-        targetGroup.AddMember(playersTransforms[playerClientId], 1, 1);
+        Add(playersTransforms[playerClientId]);
     }
 
     public void RemovePlayerFromTargetGroup(ulong playerClientId)
@@ -43,26 +39,42 @@ public class CameraManager : NetworkBehaviour
 
         NetworkLog.LogInfoServer("RemovePlayerFromTargetGroupClientRpc id=" + playerClientId);
 
-        targetGroup.RemoveMember(playersTransforms[playerClientId]);
+        Remove(playersTransforms[playerClientId]);
     }
 
     public void RemovePlayersFromGroup()
     {
-        foreach(Transform playerTransform in playersTransforms)
+        if (!IsClient) return;
+
+        foreach (Transform playerTransform in playersTransforms)
         {
-            targetGroup.RemoveMember(playerTransform);
+            Remove(playerTransform);
         }
     }
 
     public void AddArrowToTargetGroup(Transform currentArrowTransform)
     {
+        if (!IsClient) return;
+
         arrowTransform = currentArrowTransform;
-        targetGroup.AddMember(arrowTransform, 1, 1);
+        Add(arrowTransform);
     }
 
     public void RemoveArrowToTargetGroup()
     {
-        targetGroup.RemoveMember(arrowTransform);
+        if (!IsClient) return;
+
+        Remove(arrowTransform);
+    }
+
+    private void Add(Transform target)
+    {
+        targetGroup.AddMember(target, 1, 1);
+    }
+
+    private void Remove(Transform target)
+    {
+        targetGroup.RemoveMember(target);
     }
 
     private void StartSingleton()

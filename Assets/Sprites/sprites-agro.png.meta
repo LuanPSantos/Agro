@@ -73,7 +73,7 @@ TextureImporter:
   spriteMeshType: 1
   alignment: 0
   spritePivot: {x: 0.5, y: 0.5}
-  spritePixelsToUnits: 100
+  spritePixelsToUnits: 300
   spriteBorder: {x: 0, y: 0, z: 0, w: 0}
   spriteGenerateFallbackPhysicsShape: 1
   alphaUsage: 1
@@ -121,10 +121,10 @@ TextureImporter:
       name: sprites-agro_0
       rect:
         serializedVersion: 2
-        x: 8
-        y: 333
-        width: 106
-        height: 106
+        x: 20
+        y: 860
+        width: 301
+        height: 301
       alignment: 0
       pivot: {x: 0.5, y: 0.5}
       border: {x: 0, y: 0, z: 0, w: 0}
@@ -142,10 +142,10 @@ TextureImporter:
       name: sprites-agro_1
       rect:
         serializedVersion: 2
-        x: 120
-        y: 134
-        width: 170
-        height: 310
+        x: 647
+        y: 404
+        width: 519
+        height: 717
       alignment: 4
       pivot: {x: 0, y: 0.5}
       border: {x: 0, y: 0, z: 0, w: 0}
@@ -163,12 +163,12 @@ TextureImporter:
       name: sprites-agro_2
       rect:
         serializedVersion: 2
-        x: 32
-        y: 206
-        width: 6
-        height: 81
-      alignment: 2
-      pivot: {x: 0.5, y: 1}
+        x: 63
+        y: 448
+        width: 46
+        height: 286
+      alignment: 9
+      pivot: {x: 0.5, y: 0.92}
       border: {x: 0, y: 0, z: 0, w: 0}
       outline: []
       physicsShape: []
@@ -184,12 +184,12 @@ TextureImporter:
       name: sprites-agro_3
       rect:
         serializedVersion: 2
-        x: 59
-        y: 231
-        width: 6
-        height: 100
-      alignment: 2
-      pivot: {x: 0.5, y: 1}
+        x: 230
+        y: 426
+        width: 46
+        height: 346
+      alignment: 9
+      pivot: {x: 0.5, y: 0.93}
       border: {x: 0, y: 0, z: 0, w: 0}
       outline: []
       physicsShape: []
@@ -205,12 +205,12 @@ TextureImporter:
       name: sprites-agro_4
       rect:
         serializedVersion: 2
-        x: 90
-        y: 151
-        width: 6
-        height: 100
-      alignment: 2
-      pivot: {x: 0.5, y: 1}
+        x: 0
+        y: 0
+        width: 301
+        height: 301
+      alignment: 7
+      pivot: {x: 0.5, y: 0}
       border: {x: 0, y: 0, z: 0, w: 0}
       outline: []
       physicsShape: []
@@ -226,12 +226,12 @@ TextureImporter:
       name: sprites-agro_5
       rect:
         serializedVersion: 2
-        x: 0
-        y: 0
-        width: 100
-        height: 100
-      alignment: 7
-      pivot: {x: 0.5, y: 0}
+        x: 393
+        y: 259
+        width: 301
+        height: 31
+      alignment: 0
+      pivot: {x: 0.5, y: 0.5}
       border: {x: 0, y: 0, z: 0, w: 0}
       outline: []
       physicsShape: []
@@ -247,10 +247,10 @@ TextureImporter:
       name: sprites-agro_6
       rect:
         serializedVersion: 2
-        x: 131
-        y: 86
-        width: 101
-        height: 11
+        x: 828
+        y: 223
+        width: 113
+        height: 113
       alignment: 0
       pivot: {x: 0.5, y: 0.5}
       border: {x: 0, y: 0, z: 0, w: 0}
@@ -268,10 +268,10 @@ TextureImporter:
       name: sprites-agro_7
       rect:
         serializedVersion: 2
-        x: 276
-        y: 74
-        width: 38
-        height: 38
+        x: 373
+        y: 60
+        width: 750
+        height: 82
       alignment: 0
       pivot: {x: 0.5, y: 0.5}
       border: {x: 0, y: 0, z: 0, w: 0}
@@ -281,27 +281,6 @@ TextureImporter:
       bones: []
       spriteID: 57729035c73027380800000000000000
       internalID: -8975107274892040331
-      vertices: []
-      indices: 
-      edges: []
-      weights: []
-    - serializedVersion: 2
-      name: sprites-agro_8
-      rect:
-        serializedVersion: 2
-        x: 124
-        y: 20
-        width: 250
-        height: 28
-      alignment: 0
-      pivot: {x: 0.5, y: 0.5}
-      border: {x: 0, y: 0, z: 0, w: 0}
-      outline: []
-      physicsShape: []
-      tessellationDetail: 0
-      bones: []
-      spriteID: cccf389f82c557970800000000000000
-      internalID: 8752002781919050956
       vertices: []
       indices: 
       edges: []
