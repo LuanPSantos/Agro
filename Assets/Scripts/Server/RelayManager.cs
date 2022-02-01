@@ -105,16 +105,16 @@ public class RelayManager : NetworkBehaviour
         return relayHostData;
     }
 
-    private async void InitializeAndSignIn()
+    private void InitializeAndSignIn()
     {
         InitializationOptions inicializationOptions = new InitializationOptions().
             SetEnvironmentName(environment);
 
-        await UnityServices.InitializeAsync(inicializationOptions);
+        UnityServices.InitializeAsync(inicializationOptions);
 
         if (!AuthenticationService.Instance.IsSignedIn)
         {
-            await AuthenticationService.Instance.SignInAnonymouslyAsync();
+            AuthenticationService.Instance.SignInAnonymouslyAsync();
         }
     }
 

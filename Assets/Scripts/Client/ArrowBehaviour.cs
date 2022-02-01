@@ -47,12 +47,10 @@ public class ArrowBehaviour : NetworkBehaviour
         {
             ArrowCollidedWithPlayer?.Invoke(collision.GetContact(0));
         }
-        else
-        {
-            Destroy(gameObject, 5f);
-        }
 
         ArrowCollided?.Invoke();
+
+        Destroy(gameObject, 3f);
     }
 
     private void AlignRotation()

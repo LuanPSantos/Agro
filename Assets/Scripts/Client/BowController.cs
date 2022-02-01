@@ -69,8 +69,8 @@ public class BowController : MonoBehaviour
 
     private Vector3 GetAimDirection()
     {
-        Vector3 mousePosition = mainCamera.ScreenToWorldPoint(Input.mousePosition);
-        return (mousePosition - bowTransform.position).normalized;
+        Vector2 mousePosition = mainCamera.ScreenToWorldPoint(Input.mousePosition);
+        return (mousePosition - (Vector2)bowTransform.position).normalized;
     }
 
     private float GetLaunchForce()

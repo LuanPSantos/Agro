@@ -1377,7 +1377,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   timeToFullLoadLauchForce: 3
   releaseThreshold: 0.01
-  maxLaunchForce: 2500
+  maxLaunchForce: 1000
   bowTransform: {fileID: 4625966899559826055}
 --- !u!70 &-8970094022995998089
 CapsuleCollider2D:
@@ -1434,7 +1434,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 124076d55d74aca43a0c6bbff912927a, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  arrow: {fileID: 5553306767083526971, guid: 347a7cfd9810c3c4592652a8e355b090, type: 3}
+  arrow: {fileID: 707497891225597650, guid: 60bfe176cb3970d4584d31a11cc4656a, type: 3}
 --- !u!1 &4625966900648513491
 GameObject:
   m_ObjectHideFlags: 0

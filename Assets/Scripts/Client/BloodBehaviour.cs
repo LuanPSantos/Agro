@@ -19,7 +19,16 @@ public class BloodBehaviour : NetworkBehaviour
     {
         if (!IsClient) return;
 
-        particle.transform.position = contactPoint2D.point;
+        SpawnBloodClientRpc(contactPoint2D.point, contactPoint2D.normal);
+    }
+
+    [ClientRpc]
+    private void SpawnBloodClientRpc(Vector2 point, Vector2 normal)
+    {
+        float angle = Mathf.Atan2(normal.y, normal.x) * Mathf.Rad2Deg;
+        particle.transform.rotation = Quaternion.AngleAxis(angle, Vector3.forward);
+
+        particle.transform.position = point;
 
         particle.Play();
     }
