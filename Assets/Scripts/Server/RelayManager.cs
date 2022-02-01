@@ -1,18 +1,17 @@
 using System;
 using System.Threading.Tasks;
 using Unity.Netcode;
-/*
 using Unity.Services.Authentication;
 using Unity.Services.Core;
 using Unity.Services.Core.Environments;
 using Unity.Services.Relay;
 using Unity.Services.Relay.Models;
 using UnityEngine;
-*/
+
 
 public class RelayManager : NetworkBehaviour
 {
-    
+    public event Action<string> CodeGenereted;
     public static RelayManager Singleton;
 
     private string environment = "production";
@@ -22,17 +21,23 @@ public class RelayManager : NetworkBehaviour
     {
         StartSingleton();
     }
-    /*
+
     public UnityTransport Transport => NetworkManager.Singleton.gameObject.GetComponent<UnityTransport>();
 
     public bool IsRelayEnabled => Transport != null && Transport.Protocol == UnityTransport.ProtocolType.RelayUnityTransport;
-    */
 
-    public bool IsRelayEnabled = false;
     public async Task<RelayHostData> SetUpRelay()
     {
-        /*
-        InitializeAndSignIn();
+
+        InitializationOptions inicializationOptions = new InitializationOptions().
+            SetEnvironmentName(environment);
+
+        await UnityServices.InitializeAsync(inicializationOptions);
+
+        if (!AuthenticationService.Instance.IsSignedIn)
+        {
+            await AuthenticationService.Instance.SignInAnonymouslyAsync();
+        }
 
         Allocation allocation = await Relay.Instance.CreateAllocationAsync(maxConnections);
 
@@ -57,17 +62,23 @@ public class RelayManager : NetworkBehaviour
         );
 
         Debug.Log("SetUpRelay Join Code = " + relayHostData.JoinCode);
+        CodeGenereted?.Invoke(relayHostData.JoinCode);
 
         return relayHostData;
-        */
-
-        return new RelayHostData();
     }
 
     public async Task<RelayJoinData> JoinRelay(string joinCode)
     {
-        /*
-        InitializeAndSignIn();
+
+        InitializationOptions inicializationOptions = new InitializationOptions().
+            SetEnvironmentName(environment);
+
+        await UnityServices.InitializeAsync(inicializationOptions);
+
+        if (!AuthenticationService.Instance.IsSignedIn)
+        {
+            await AuthenticationService.Instance.SignInAnonymouslyAsync();
+        }
 
         JoinAllocation allocation = await Relay.Instance.JoinAllocationAsync(joinCode);
 
@@ -92,12 +103,8 @@ public class RelayManager : NetworkBehaviour
         );
 
         return relayHostData;
-
-        */
-
-        return new RelayJoinData();
     }
-    /*
+
     private async void InitializeAndSignIn()
     {
         InitializationOptions inicializationOptions = new InitializationOptions().
@@ -110,7 +117,7 @@ public class RelayManager : NetworkBehaviour
             await AuthenticationService.Instance.SignInAnonymouslyAsync();
         }
     }
-    */
+
     private void StartSingleton()
     {
         if (Singleton == null)

@@ -5,9 +5,22 @@ using UnityEngine.UI;
 using Unity.Netcode;
 using TMPro;
 
-public class NetworkStartManager : MonoBehaviour
+public class StartNetworkManager : MonoBehaviour
 {
     public TMP_InputField code;
+    public TMP_Text status;
+
+    public bool runLocal = true;
+
+    void Start()
+    {
+        RelayManager.Singleton.CodeGenereted += CodeGeneretedHandle;
+    }
+
+    private void CodeGeneretedHandle(string joinCode)
+    {
+        status.SetText("Code to connect is " + joinCode);
+    }
 
     public void StartHostOrClient()
     {
@@ -23,7 +36,7 @@ public class NetworkStartManager : MonoBehaviour
 
     private async void StartClient()
     {
-        if (RelayManager.Singleton.IsRelayEnabled && HasCode())
+        if (RelayManager.Singleton.IsRelayEnabled && HasCode() && !runLocal)
         {
             await RelayManager.Singleton.JoinRelay(code.text);
         }
@@ -32,7 +45,7 @@ public class NetworkStartManager : MonoBehaviour
 
     private async void StartHost()
     {
-        if (RelayManager.Singleton.IsRelayEnabled)
+        if (RelayManager.Singleton.IsRelayEnabled && !runLocal)
         {
             await RelayManager.Singleton.SetUpRelay();
         }

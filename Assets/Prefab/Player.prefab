@@ -157,7 +157,7 @@ GameObject:
   - component: {fileID: 8395894850242661355}
   m_Layer: 7
   m_Name: LeftForearm
-  m_TagString: Untagged
+  m_TagString: Player
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -256,7 +256,7 @@ GameObject:
   - component: {fileID: 2838584796979052161}
   m_Layer: 7
   m_Name: LeftLeg
-  m_TagString: Untagged
+  m_TagString: Player
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -355,7 +355,7 @@ GameObject:
   - component: {fileID: 3067631152465952012}
   m_Layer: 7
   m_Name: RightForearm
-  m_TagString: Untagged
+  m_TagString: Player
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -454,7 +454,7 @@ GameObject:
   - component: {fileID: 6014186592917215216}
   m_Layer: 7
   m_Name: Body
-  m_TagString: Untagged
+  m_TagString: Player
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -553,7 +553,7 @@ GameObject:
   - component: {fileID: 7567756859152063313}
   m_Layer: 7
   m_Name: RightLeg
-  m_TagString: Untagged
+  m_TagString: Player
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -652,7 +652,7 @@ GameObject:
   - component: {fileID: 8394455810426574885}
   m_Layer: 7
   m_Name: Head
-  m_TagString: Untagged
+  m_TagString: Player
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -751,7 +751,7 @@ GameObject:
   - component: {fileID: 3995627351664119837}
   m_Layer: 7
   m_Name: LeftThigh
-  m_TagString: Untagged
+  m_TagString: Player
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -851,7 +851,7 @@ GameObject:
   - component: {fileID: 3034047937698595152}
   m_Layer: 7
   m_Name: RightThigh
-  m_TagString: Untagged
+  m_TagString: Player
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -950,7 +950,7 @@ GameObject:
   - component: {fileID: 227340593272268944}
   m_Layer: 7
   m_Name: Sholder
-  m_TagString: Untagged
+  m_TagString: Player
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -1012,7 +1012,7 @@ GameObject:
   - component: {fileID: 8228296384949938428}
   m_Layer: 7
   m_Name: Hip
-  m_TagString: Untagged
+  m_TagString: Player
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -1111,7 +1111,7 @@ GameObject:
   - component: {fileID: 3787732296855850956}
   m_Layer: 7
   m_Name: RightArm
-  m_TagString: Untagged
+  m_TagString: Player
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -1211,7 +1211,7 @@ GameObject:
   - component: {fileID: 3670206827524135705}
   m_Layer: 7
   m_Name: LeftArm
-  m_TagString: Untagged
+  m_TagString: Player
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -1312,6 +1312,7 @@ GameObject:
   - component: {fileID: 4445633703474252653}
   - component: {fileID: -8970094022995998089}
   - component: {fileID: 2937562693358003752}
+  - component: {fileID: 173314557080336646}
   m_Layer: 0
   m_Name: Player
   m_TagString: Player
@@ -1359,11 +1360,9 @@ MonoBehaviour:
   m_GameObject: {fileID: 4625966900436365820}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 460ab4d141f001d49bcfd366aed2bca7, type: 3}
+  m_Script: {fileID: 11500000, guid: 9bbaadf8995f41c45a9560cb6a328011, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  clientId:
-    m_InternalValue: 0
 --- !u!114 &4445633703474252653
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -1378,9 +1377,8 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   timeToFullLoadLauchForce: 3
   releaseThreshold: 0.01
-  maxLaunchForce: 2000
+  maxLaunchForce: 2500
   bowTransform: {fileID: 4625966899559826055}
-  arrow: {fileID: 707497891225597650, guid: 60bfe176cb3970d4584d31a11cc4656a, type: 3}
 --- !u!70 &-8970094022995998089
 CapsuleCollider2D:
   m_ObjectHideFlags: 0
@@ -1388,7 +1386,7 @@ CapsuleCollider2D:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 4625966900436365820}
-  m_Enabled: 1
+  m_Enabled: 0
   m_Density: 1
   m_Material: {fileID: 0}
   m_IsTrigger: 0
@@ -1424,6 +1422,19 @@ MonoBehaviour:
   InLocalSpace: 0
   Interpolate: 1
   CanCommitToTransform: 0
+--- !u!114 &173314557080336646
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 4625966900436365820}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 124076d55d74aca43a0c6bbff912927a, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  arrow: {fileID: 5553306767083526971, guid: 347a7cfd9810c3c4592652a8e355b090, type: 3}
 --- !u!1 &4625966900648513491
 GameObject:
   m_ObjectHideFlags: 0
@@ -1435,7 +1446,7 @@ GameObject:
   - component: {fileID: 4625966900648513490}
   m_Layer: 7
   m_Name: Graph
-  m_TagString: Untagged
+  m_TagString: Player
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0

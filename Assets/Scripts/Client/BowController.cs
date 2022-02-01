@@ -4,14 +4,16 @@ using UnityEngine;
 using Unity.Netcode;
 using System;
 
-public class BowController : NetworkBehaviour
+public class BowController : MonoBehaviour
 {
     public static event Action<float> LaunchForcePercentChanged;
+
+    public event Action<float, Vector3, Vector3, Quaternion> Fired;
+
     public float timeToFullLoadLauchForce = 3f;
     public float releaseThreshold = 0.01f;
     public int maxLaunchForce = 2000;
     public Transform bowTransform;
-    public GameObject arrow;
 
     private Camera mainCamera;
     private float currentLaunchForcePercent;
@@ -24,27 +26,10 @@ public class BowController : NetworkBehaviour
 
     void Update()
     {
-        if (IsOwner)
-        {
-            Aim();
-            Pull();
-            Fire();
-        }
+        Aim();
+        Pull();
+        Fire();
     }
-
-    // TODO Poderia disparar um evento e executar essa classe em outra, que só tenha coisas de network
-    [ServerRpc]
-    void FireServerRpc(float force, Vector3 positon, Vector3 direction, Quaternion rotation)
-    {
-        if (!IsServer || !IsHost) return;
-
-        NetworkLog.LogInfoServer("FireServerRpc");
-        GameObject spawnedArrow = Instantiate(arrow, positon, rotation);
-
-        spawnedArrow.GetComponent<NetworkObject>().Spawn();
-        spawnedArrow.GetComponent<Rigidbody2D>().AddForce(direction * force);
-    }
-
 
     private void Aim()
     {
@@ -53,9 +38,9 @@ public class BowController : NetworkBehaviour
 
     private void Fire()
     {
-        if (Input.GetKeyDown(KeyCode.Mouse0))
+        if (Input.GetMouseButtonDown(0))
         {
-            FireServerRpc(GetLaunchForce(), GetArrowSpawnPosition(), GetAimDirection(), GetAimRotation());
+            Fired?.Invoke(GetLaunchForce(), GetArrowSpawnPosition(), GetAimDirection(), GetAimRotation());
         }
     }
 
@@ -90,7 +75,7 @@ public class BowController : NetworkBehaviour
 
     private float GetLaunchForce()
     {
-        return currentLaunchForcePercent * maxLaunchForce;
+        return maxLaunchForce;
     }
 
     private Vector2 GetArrowSpawnPosition()

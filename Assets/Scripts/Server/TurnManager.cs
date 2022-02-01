@@ -24,13 +24,13 @@ public class TurnManager : NetworkBehaviour
 
     private void PlayersSpawnedHandle(ulong playerOne, ulong playerTwo)
     {
+        if (!IsServer) return;
+
         StartCoroutine(StartTurn(playerOne, playerTwo));
     }
 
     private IEnumerator StartTurn(ulong playerOne, ulong playerTwo)
     {
-        if (!IsServer || !IsHost) yield return null;
-
         yield return new WaitForSeconds(3);
 
         NetworkLog.LogInfoServer("StartTurn for players with clientId=" + playerOne + " and clientId=" + playerTwo);
@@ -44,20 +44,19 @@ public class TurnManager : NetworkBehaviour
 
     private void ArrowCollidedHandle()
     {
+        if (!IsServer) return;
+
         StartCoroutine(SwitchTurn());
     }
 
     private IEnumerator SwitchTurn()
     {
-        if (!IsServer || !IsHost) yield return null;
-
         yield return new WaitForSeconds(3);
 
         ulong nextPlayerClientId = GetNextPlayerClientId();
         NetworkLog.LogInfoServer("SwitchTurn " + nextPlayerClientId);
 
-        RemoveArrowToTargetGroupClientRpc();
-        AddPlayerFromTargetGroupClientRpc(nextPlayerClientId);
+        MakeCameraLookToPlayerClientRpc(nextPlayerClientId);
 
         SetPlayerTurn(currentPlayerClientId.Value, false);
         SetPlayerTurn(nextPlayerClientId, true);
@@ -81,21 +80,15 @@ public class TurnManager : NetworkBehaviour
     }
 
     [ClientRpc]
-    private void AddPlayerFromTargetGroupClientRpc(ulong clientId)
+    private void MakeCameraLookToPlayerClientRpc(ulong clientId)
     {
-        CameraManager.Singleton.AddPlayerToTargetGroup(clientId);
-    }
-
-    [ClientRpc]
-    private void RemoveArrowToTargetGroupClientRpc()
-    {
-        CameraManager.Singleton.RemoveArrowToTargetGroup();
+        CameraManager.Singleton.MakeCameraLookToPlayer(clientId);
     }
 
     private void SetPlayerTurn(ulong playerClientId, bool canPlay)
     {
         NetworkManager.Singleton.ConnectedClients[playerClientId]
-            .PlayerObject.GetComponent<PlayerController>()
+            .PlayerObject.GetComponent<PlayerNetworkController>()
             .SetCanPlay(canPlay);
     }
 

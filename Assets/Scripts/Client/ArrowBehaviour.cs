@@ -7,16 +7,29 @@ using Unity.Netcode;
 public class ArrowBehaviour : NetworkBehaviour
 {
     public static event Action ArrowCollided;
+    public static event Action<ContactPoint2D> ArrowCollidedWithPlayer;
 
     private Rigidbody2D rb;
     private bool hasCollided = false;
     private Collider2D arrowCollider;
-    void Start()
+
+    void Awake()
     {
         rb = GetComponent<Rigidbody2D>();
         arrowCollider = GetComponent<Collider2D>();
     }
 
+    public override void OnNetworkSpawn()
+    {
+        if (!IsClient) return;
+
+        NetworkLog.LogInfoServer("Arrow Spawned");
+
+        StartCoroutine(EnableCollider());
+
+        CameraManager.Singleton.RemovePlayersFromGroup();
+        CameraManager.Singleton.AddArrowToTargetGroup(transform);
+    }
     void Update()
     {
         if(hasCollided == false)
@@ -26,17 +39,20 @@ public class ArrowBehaviour : NetworkBehaviour
     }
 
     void OnCollisionEnter2D(Collision2D collision)
-    {      
+    {
         hasCollided = true;
         DisablePhysics();
-        ArrowCollided?.Invoke();
 
-        if(!collision.gameObject.CompareTag("Player"))
+        if (collision.gameObject.CompareTag("Player"))
+        {
+            ArrowCollidedWithPlayer?.Invoke(collision.GetContact(0));
+        }
+        else
         {
             Destroy(gameObject, 5f);
         }
 
-        arrowCollider.enabled = false;
+        ArrowCollided?.Invoke();
     }
 
     private void AlignRotation()
@@ -49,15 +65,13 @@ public class ArrowBehaviour : NetworkBehaviour
     {
         rb.velocity = Vector2.zero;
         rb.isKinematic = true;
+        arrowCollider.enabled = false;
     }
 
-     public override void OnNetworkSpawn()
+    private IEnumerator EnableCollider()
     {
-        if(IsClient)
-        {
-            NetworkLog.LogInfoServer("OnNetworkSpawn arrow");
-            CameraManager.Singleton.RemovePlayersFromGroup();
-            CameraManager.Singleton.AddArrowToTargetGroup(transform);
-        }
+        yield return new WaitForSeconds(0.5f);
+
+        arrowCollider.enabled = true;
     }
 }

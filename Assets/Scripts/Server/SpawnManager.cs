@@ -45,7 +45,7 @@ public class SpawnManager : NetworkBehaviour
     private void SpawnPlayer(ulong clientId, Vector2 position, Vector2 scale)
     {
         GameObject player = Instantiate(playerPrefab, position, Quaternion.identity);
-        player.GetComponent<PlayerController>().clientId.Value = clientId;
+        player.GetComponent<PlayerNetworkController>().SetClientId(clientId);
 
         player.GetComponent<NetworkObject>().SpawnAsPlayerObject(clientId);
         

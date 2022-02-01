@@ -31,7 +31,7 @@ public class GameManager : NetworkBehaviour
 
     private void SceneLoadedHandle(string sceneName, LoadSceneMode loadSceneMode, List<ulong> clientsCompleted, List<ulong> clientsTimedOut)
     {
-        if (!IsServer || !IsHost) return;
+        if (!IsServer) return;
 
         if(clientsCompleted.Count == 2)
         {

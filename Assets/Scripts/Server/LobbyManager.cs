@@ -34,7 +34,7 @@ public class LobbyManager : NetworkBehaviour
 
     private void ClientConnectedHandle(ulong clientId)
     {
-        if (!IsServer || !IsHost) return;
+        if (!IsServer) return;
 
         NetworkLog.LogInfoServer("Client Connected with id = " + clientId);
 

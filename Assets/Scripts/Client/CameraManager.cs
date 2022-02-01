@@ -9,7 +9,7 @@ public class CameraManager : NetworkBehaviour
     public static CameraManager Singleton;
     public CinemachineTargetGroup targetGroup;
 
-    private Transform[] playersTransforms = new Transform[2];
+    private Transform[] playersTransforms = new Transform[4];
     private Transform arrowTransform;
 
     void Awake()
@@ -31,6 +31,18 @@ public class CameraManager : NetworkBehaviour
 
         NetworkLog.LogInfoServer("AddPlayerToTargetGroupClientRpc id=" + playerClientId);
         Add(playersTransforms[playerClientId]);
+    }
+
+    public void MakeCameraLookToPlayer(ulong playerClientId)
+    {
+        if (!IsClient) return;
+
+        NetworkLog.LogInfoServer("MakeCameraLookToPlayer id=" + playerClientId);
+
+        RemoveArrowToTargetGroup();
+        RemovePlayersFromGroup();
+
+        AddPlayerToTargetGroup(playerClientId);
     }
 
     public void RemovePlayerFromTargetGroup(ulong playerClientId)
