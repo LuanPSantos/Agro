@@ -1310,9 +1310,7 @@ GameObject:
   - component: {fileID: 598739085766003561}
   - component: {fileID: 8357831508732191155}
   - component: {fileID: 4445633703474252653}
-  - component: {fileID: -8970094022995998089}
   - component: {fileID: 2937562693358003752}
-  - component: {fileID: 173314557080336646}
   m_Layer: 0
   m_Name: Player
   m_TagString: Player
@@ -1379,22 +1377,7 @@ MonoBehaviour:
   releaseThreshold: 0.01
   maxLaunchForce: 1000
   bowTransform: {fileID: 4625966899559826055}
---- !u!70 &-8970094022995998089
-CapsuleCollider2D:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 4625966900436365820}
-  m_Enabled: 0
-  m_Density: 1
-  m_Material: {fileID: 0}
-  m_IsTrigger: 0
-  m_UsedByEffector: 0
-  m_UsedByComposite: 0
-  m_Offset: {x: -0.00000011920929, y: 0}
-  m_Size: {x: 1.0196922, y: 1.0196922}
-  m_Direction: 0
+  arrow: {fileID: 707497891225597650, guid: 60bfe176cb3970d4584d31a11cc4656a, type: 3}
 --- !u!114 &2937562693358003752
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -1422,19 +1405,6 @@ MonoBehaviour:
   InLocalSpace: 0
   Interpolate: 1
   CanCommitToTransform: 0
---- !u!114 &173314557080336646
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 4625966900436365820}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 124076d55d74aca43a0c6bbff912927a, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  arrow: {fileID: 707497891225597650, guid: 60bfe176cb3970d4584d31a11cc4656a, type: 3}
 --- !u!1 &4625966900648513491
 GameObject:
   m_ObjectHideFlags: 0

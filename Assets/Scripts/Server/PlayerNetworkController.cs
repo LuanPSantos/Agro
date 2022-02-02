@@ -12,28 +12,21 @@ public class PlayerNetworkController : NetworkBehaviour
     private NetworkVariable<ulong> clientId = new NetworkVariable<ulong>((ulong) 0);
     private NetworkVariable<bool> canPlay = new NetworkVariable<bool>(false);
 
-
     void Start()
     {
         playerColliders = GetComponentsInChildren<Collider2D>();
         bowController = GetComponent<BowController>();
+
+        bowController.enabled = false;
+        EnablePlayerColliders(true);
     }
 
     void Update()
     {
-        if (canPlay.Value && !bowController.enabled)
-        {
-            bowController.enabled = true;
-            EnablePlayersColliders(false);
-        }
-        else if(!canPlay.Value && bowController.enabled)
-        {
-            bowController.enabled = false;
-            EnablePlayersColliders(true);
-        }
+        bowController.enabled = canPlay.Value;
     }
 
-    public void SetCanPlay(bool canPlay)
+    public void EnablePlayerToPlay(bool canPlay)
     {
         if (!IsServer) return;
 
@@ -55,7 +48,7 @@ public class PlayerNetworkController : NetworkBehaviour
         this.clientId.Value = clientId;
     }
 
-    private void EnablePlayersColliders(bool enabled)
+    public void EnablePlayerColliders(bool enabled)
     {
         foreach(Collider2D col in playerColliders)
         {

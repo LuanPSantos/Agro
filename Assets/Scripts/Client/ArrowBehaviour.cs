@@ -21,11 +21,11 @@ public class ArrowBehaviour : NetworkBehaviour
 
     public override void OnNetworkSpawn()
     {
-        if (!IsClient) return;
-
         NetworkLog.LogInfoServer("Arrow Spawned");
 
         StartCoroutine(EnableCollider());
+
+        if (!IsClient) return;
 
         CameraManager.Singleton.RemovePlayersFromGroup();
         CameraManager.Singleton.AddArrowToTargetGroup(transform);
@@ -40,6 +40,9 @@ public class ArrowBehaviour : NetworkBehaviour
 
     void OnCollisionEnter2D(Collision2D collision)
     {
+        if (hasCollided) return;
+
+        NetworkLog.LogInfoServer("Arrow OnCollisionEnter2D with " + collision.gameObject.name);
         hasCollided = true;
         DisablePhysics();
 

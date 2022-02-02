@@ -2,58 +2,104 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using Unity.Netcode;
-using UnityEngine.SceneManagement;
-using System;
-
-
 public class GameManager : NetworkBehaviour
 {
-    public static GameManager Singleton;
+    public State currentState;
 
-    public event Action<ulong, ulong> SceneLoadedForPlayers;
+    private SpawnManager spawnManager;
+    private TurnManager turnManager;
 
-    private const string gameplayScene = "Gameplay";
+    private ulong playerOneClientId;
+    private ulong playerTwoClientId;
+
     void Awake()
     {
-        StartSingleton();
-        DontDestroyOnLoad(gameObject);     
+        spawnManager = GetComponent<SpawnManager>();
+        turnManager = GetComponent<TurnManager>();
+
+        BowController.Fired += OnPlayerMakeHisMovement;
+        ArrowBehaviour.ArrowCollided += OnArrowCollided;
     }
 
     void Start()
     {
-        LobbyManager.Singleton.PlayersConnected += PlayersConnectedHandle;
+        GameplaySceneManager.Singleton.SceneLoadedForPlayers += SceneLoadedForPlayersHandle;
+
+        currentState = State.WAITING_PLAYERS;
     }
 
-    private void PlayersConnectedHandle(ulong playerOneClientId, ulong playerTwoClientId)
-    {
-        LoadGamePlayScene();
-    }
-
-    private void SceneLoadedHandle(string sceneName, LoadSceneMode loadSceneMode, List<ulong> clientsCompleted, List<ulong> clientsTimedOut)
+    void Update()
     {
         if (!IsServer) return;
 
-        if(clientsCompleted.Count == 2)
+        switch(currentState)
         {
-            SceneLoadedForPlayers?.Invoke(clientsCompleted[0], clientsCompleted[1]);
+            case State.START:
+                {
+                    spawnManager.SpawnPlayers(playerOneClientId, playerTwoClientId);
+                    turnManager.SetupPlayers(playerOneClientId, playerTwoClientId);
+
+                    currentState = State.WAITING_AFTER_STARTED;
+
+                    break;
+                }
+            case State.WAITING_AFTER_STARTED:
+                {
+                    StartCoroutine(WaitAndStartPlayerTurn());
+
+                    currentState = State.WAITING_PLAYERS;
+
+                    break;
+                }
+            case State.END:
+                {
+                    break;
+                }
+            case State.WAITING_PLAYERS:
+                {
+                    break;
+                }
         }
     }
 
-    private void LoadGamePlayScene()
+    private void SceneLoadedForPlayersHandle(ulong playerOneClientId, ulong playerTwoClientId)
     {
-        NetworkManager.Singleton.SceneManager.OnLoadEventCompleted += SceneLoadedHandle;
-        NetworkManager.Singleton.SceneManager.LoadScene(gameplayScene, LoadSceneMode.Single);
+        if (!IsServer) return;
+
+        this.playerOneClientId = playerOneClientId;
+        this.playerTwoClientId = playerTwoClientId;
+
+        currentState = State.START;
     }
 
-    private void StartSingleton()
+    private IEnumerator WaitAndStartPlayerTurn()
     {
-        if (Singleton == null)
-        {
-            Singleton = this;
-        }
-        else
-        {
-            Destroy(this);
-        }
+        yield return new WaitForSeconds(3f);
+
+        turnManager.SetNextPlayerTurn();
+    }
+
+    private void OnPlayerMakeHisMovement()
+    {
+        if (!IsServer) return;
+
+        turnManager.RemoveCurrentPlayerTurn();
+    }
+
+    private void OnArrowCollided()
+    {
+        if (!IsServer) return;
+        
+        StartCoroutine(WaitAndStartPlayerTurn());
+
+        currentState = State.WAITING_PLAYERS;
+    }
+
+    public enum State
+    {
+        START,
+        END,
+        WAITING_PLAYERS,
+        WAITING_AFTER_STARTED
     }
 }

@@ -2,81 +2,47 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using Unity.Netcode;
-using System;
 
 public class TurnManager : NetworkBehaviour
 {
-    public static TurnManager Singleton;
-    public ulong numbersOfPlayers = 2;
+    private int currentPlayerIndex;
+    private ulong[] players = new ulong[2];
 
-    private NetworkVariable<ulong> currentPlayerClientId = new NetworkVariable<ulong>();
-    private ulong serverOffset = 1;
-    void Awake()
+    public void SetupPlayers(ulong playerOneClientId, ulong playerTwoClientId)
     {
-        StartSingleton();
+        NetworkLog.LogInfoServer("SetupPlayers P1=" + playerOneClientId + " P2=" + playerTwoClientId);
+
+        players[0] = playerOneClientId;
+        players[1] = playerTwoClientId;
+
+        SetEnablePlayerToPlay(players[0], false);
+        SetEnablePlayerToPlay(players[1], false);
+
+        currentPlayerIndex = Random.Range(0, 2);
     }
 
-    void Start()
+    public void SetNextPlayerTurn()
     {
-        SpawnManager.Singleton.PlayersSpawned += PlayersSpawnedHandle;
-        ArrowBehaviour.ArrowCollided += ArrowCollidedHandle;
+        int nextPlayerIndex = GetNextPlayerIndex();
+        NetworkLog.LogInfoServer("P" + players[nextPlayerIndex] + " Turn");
+
+        MakeCameraLookToPlayerClientRpc(players[nextPlayerIndex]);
+
+        SetEnablePlayerToPlay(players[nextPlayerIndex], true);
+        SetEnablePlayerColliders(players[nextPlayerIndex], false);
+        SetEnablePlayerColliders(players[currentPlayerIndex], true);
+
+        currentPlayerIndex = nextPlayerIndex;
     }
 
-    private void PlayersSpawnedHandle(ulong playerOne, ulong playerTwo)
+    public void RemoveCurrentPlayerTurn()
     {
-        if (!IsServer) return;
-
-        StartCoroutine(StartTurn(playerOne, playerTwo));
+        SetEnablePlayerToPlay(players[currentPlayerIndex], false);
     }
 
-    private IEnumerator StartTurn(ulong playerOne, ulong playerTwo)
+    private int GetNextPlayerIndex()
     {
-        yield return new WaitForSeconds(3);
-
-        NetworkLog.LogInfoServer("StartTurn for players with clientId=" + playerOne + " and clientId=" + playerTwo);
-
-        RemovePlayerFromTargetGroupClientRpc(playerTwo);
-
-        SetPlayerTurn(playerOne, true);
-
-        currentPlayerClientId.Value = playerOne;
-    }
-
-    private void ArrowCollidedHandle()
-    {
-        if (!IsServer) return;
-
-        StartCoroutine(SwitchTurn());
-    }
-
-    private IEnumerator SwitchTurn()
-    {
-        yield return new WaitForSeconds(3);
-
-        ulong nextPlayerClientId = GetNextPlayerClientId();
-        NetworkLog.LogInfoServer("SwitchTurn " + nextPlayerClientId);
-
-        MakeCameraLookToPlayerClientRpc(nextPlayerClientId);
-
-        SetPlayerTurn(currentPlayerClientId.Value, false);
-        SetPlayerTurn(nextPlayerClientId, true);
-
-        currentPlayerClientId.Value = nextPlayerClientId;
-    }
-
-    private ulong GetNextPlayerClientId()
-    {
-        if(IsHost)
-        {
-            return (currentPlayerClientId.Value + 1) % numbersOfPlayers;
-        }
-        return serverOffset + currentPlayerClientId.Value % numbersOfPlayers;
-    }
-
-    [ClientRpc]
-    private void RemovePlayerFromTargetGroupClientRpc(ulong clientId)
-    {
-        CameraManager.Singleton.RemovePlayerFromTargetGroup(clientId);
+        return (currentPlayerIndex + 1) % players.Length;
     }
 
     [ClientRpc]
@@ -85,22 +51,17 @@ public class TurnManager : NetworkBehaviour
         CameraManager.Singleton.MakeCameraLookToPlayer(clientId);
     }
 
-    private void SetPlayerTurn(ulong playerClientId, bool canPlay)
+    private void SetEnablePlayerToPlay(ulong playerClientId, bool enable)
     {
         NetworkManager.Singleton.ConnectedClients[playerClientId]
             .PlayerObject.GetComponent<PlayerNetworkController>()
-            .SetCanPlay(canPlay);
+            .EnablePlayerToPlay(enable);
     }
 
-    private void StartSingleton()
+    private void SetEnablePlayerColliders(ulong playerClientId, bool enable)
     {
-        if(Singleton == null)
-        {
-            Singleton = this;
-        }
-        else
-        {
-            Destroy(this);
-        }
+        NetworkManager.Singleton.ConnectedClients[playerClientId]
+            .PlayerObject.GetComponent<PlayerNetworkController>()
+            .EnablePlayerColliders(enable);
     }
 }

@@ -55,7 +55,6 @@ public class StartNetworkManager : MonoBehaviour
 
     private bool HasCode()
     {
-        Debug.Log(code.text);
         return !string.IsNullOrEmpty(code.text);
     }
 }

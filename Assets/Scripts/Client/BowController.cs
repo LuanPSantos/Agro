@@ -4,16 +4,17 @@ using UnityEngine;
 using Unity.Netcode;
 using System;
 
-public class BowController : MonoBehaviour
+public class BowController : NetworkBehaviour
 {
     public static event Action<float> LaunchForcePercentChanged;
 
-    public event Action<float, Vector3, Vector3, Quaternion> Fired;
+    public static event Action Fired;
 
     public float timeToFullLoadLauchForce = 3f;
     public float releaseThreshold = 0.01f;
     public int maxLaunchForce = 2000;
     public Transform bowTransform;
+    public GameObject arrow;
 
     private Camera mainCamera;
     private float currentLaunchForcePercent;
@@ -40,7 +41,9 @@ public class BowController : MonoBehaviour
     {
         if (Input.GetMouseButtonDown(0))
         {
-            Fired?.Invoke(GetLaunchForce(), GetArrowSpawnPosition(), GetAimDirection(), GetAimRotation());
+            FireServerRpc(GetLaunchForce(), GetArrowSpawnPosition(), GetAimDirection(), GetAimRotation());
+
+            enabled = false;
         }
     }
 
@@ -85,7 +88,6 @@ public class BowController : MonoBehaviour
 
     private void PullArrow()
     {
-        NetworkLog.LogInfoServer("PullArrow " + currentLaunchForcePercent);
         timeSpentPulling += Time.deltaTime;
 
         currentLaunchForcePercent = Mathf.Clamp(timeSpentPulling / timeToFullLoadLauchForce, 0f, 1f);
@@ -94,10 +96,24 @@ public class BowController : MonoBehaviour
 
     private void ReleaseArrow()
     {
-        NetworkLog.LogInfoServer("ReleaseArrow " + currentLaunchForcePercent);
         timeSpentPulling -= Time.deltaTime;
 
         currentLaunchForcePercent = Mathf.Clamp(timeSpentPulling / timeToFullLoadLauchForce, 0f, 1f);
         LaunchForcePercentChanged?.Invoke(currentLaunchForcePercent);
+    }
+
+    [ServerRpc]
+    void FireServerRpc(float force, Vector3 positon, Vector3 direction, Quaternion rotation)
+    {
+        if (!IsServer) return;
+
+        NetworkLog.LogInfoServer("FireServerRpc");
+
+        GameObject spawnedArrow = Instantiate(arrow, positon, rotation);
+        spawnedArrow.GetComponent<NetworkObject>().Spawn();
+
+        spawnedArrow.GetComponent<Rigidbody2D>().AddForce(direction * force);
+
+        Fired?.Invoke();
     }
 }

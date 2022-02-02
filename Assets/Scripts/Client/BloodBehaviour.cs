@@ -17,7 +17,7 @@ public class BloodBehaviour : NetworkBehaviour
 
     private void ArrowCollidedWithPlayerHandle(ContactPoint2D contactPoint2D)
     {
-        if (!IsClient) return;
+        if (!IsServer) return;
 
         SpawnBloodClientRpc(contactPoint2D.point, contactPoint2D.normal);
     }
