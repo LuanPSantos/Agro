@@ -20,6 +20,8 @@ public class BowController : NetworkBehaviour
     private float currentLaunchForcePercent;
     private float timeSpentPulling = 0f;
 
+    private ulong clientId;
+
     void Start()
     {
         mainCamera = Camera.main;
@@ -41,7 +43,7 @@ public class BowController : NetworkBehaviour
     {
         if (Input.GetMouseButtonDown(0))
         {
-            FireServerRpc(GetLaunchForce(), GetArrowSpawnPosition(), GetAimDirection(), GetAimRotation());
+            FireServerRpc(clientId, GetLaunchForce(), GetArrowSpawnPosition(), GetAimDirection(), GetAimRotation());
 
             enabled = false;
         }
@@ -102,8 +104,13 @@ public class BowController : NetworkBehaviour
         LaunchForcePercentChanged?.Invoke(currentLaunchForcePercent);
     }
 
+    public void SetClientId(ulong clientId)
+    {
+        this.clientId = clientId;
+    }
+
     [ServerRpc]
-    void FireServerRpc(float force, Vector3 positon, Vector3 direction, Quaternion rotation)
+    void FireServerRpc(ulong clientId, float force, Vector3 positon, Vector3 direction, Quaternion rotation)
     {
         if (!IsServer) return;
 
@@ -111,7 +118,7 @@ public class BowController : NetworkBehaviour
 
         GameObject spawnedArrow = Instantiate(arrow, positon, rotation);
         spawnedArrow.GetComponent<NetworkObject>().Spawn();
-
+        spawnedArrow.GetComponent<ArrowBehaviour>().SetClientId(clientId);
         spawnedArrow.GetComponent<Rigidbody2D>().AddForce(direction * force);
 
         Fired?.Invoke();

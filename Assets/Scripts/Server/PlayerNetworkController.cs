@@ -6,18 +6,24 @@ using System;
 
 public class PlayerNetworkController : NetworkBehaviour
 {
+    public int maxHealth = 100;
+
     private BowController bowController;
     private Collider2D[] playerColliders;
 
     private NetworkVariable<ulong> clientId = new NetworkVariable<ulong>((ulong) 0);
     private NetworkVariable<bool> canPlay = new NetworkVariable<bool>(false);
+    private NetworkVariable<int> currentHeath = new NetworkVariable<int>();
 
     void Start()
     {
+
         playerColliders = GetComponentsInChildren<Collider2D>();
-        bowController = GetComponent<BowController>();
+        bowController = GetComponent<BowController>(); 
 
         bowController.enabled = false;
+        bowController.SetClientId(clientId.Value);
+
         EnablePlayerColliders(true);
     }
 
@@ -41,11 +47,23 @@ public class PlayerNetworkController : NetworkBehaviour
             CameraManager.Singleton.AddPlayerTransform(clientId.Value, transform);
             CameraManager.Singleton.AddPlayerToTargetGroup(clientId.Value);
         }
+
+        if(IsServer)
+        {
+            currentHeath.Value = maxHealth;
+        }
     }
 
     public void SetClientId(ulong clientId)
     {
+        if (!IsServer) return;
+
         this.clientId.Value = clientId;
+    }
+
+    public ulong GetPlayerClientId()
+    {
+        return clientId.Value;
     }
 
     public void EnablePlayerColliders(bool enabled)
@@ -54,5 +72,17 @@ public class PlayerNetworkController : NetworkBehaviour
         {
             col.enabled = enabled;
         }
+    }
+
+    public void TakeDamage(int damage)
+    {
+        currentHeath.Value -= damage;
+
+        currentHeath.Value = Mathf.Clamp(currentHeath.Value, 0, maxHealth);
+    }
+
+    public bool IsDead()
+    {
+        return currentHeath.Value == 0;
     }
 }

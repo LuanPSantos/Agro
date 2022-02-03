@@ -6,12 +6,13 @@ using Unity.Netcode;
 
 public class ArrowBehaviour : NetworkBehaviour
 {
-    public static event Action ArrowCollided;
-    public static event Action<ContactPoint2D> ArrowCollidedWithPlayer;
+    public static event Action<ulong, ContactPoint2D, string> ArrowCollided;
 
     private Rigidbody2D rb;
     private bool hasCollided = false;
     private Collider2D arrowCollider;
+
+    private ulong clientId;
 
     void Awake()
     {
@@ -42,18 +43,18 @@ public class ArrowBehaviour : NetworkBehaviour
     {
         if (hasCollided) return;
 
-        NetworkLog.LogInfoServer("Arrow OnCollisionEnter2D with " + collision.gameObject.name);
+        NetworkLog.LogInfoServer("Arrow OnCollisionEnter2D with " + collision.gameObject.tag);
         hasCollided = true;
         DisablePhysics();
 
-        if (collision.gameObject.CompareTag("Player"))
-        {
-            ArrowCollidedWithPlayer?.Invoke(collision.GetContact(0));
-        }
-
-        ArrowCollided?.Invoke();
+        ArrowCollided?.Invoke(clientId, collision.GetContact(0), collision.gameObject.tag);
 
         Destroy(gameObject, 3f);
+    }
+
+    public void SetClientId(ulong clientId)
+    {
+        this.clientId = clientId;
     }
 
     private void AlignRotation()

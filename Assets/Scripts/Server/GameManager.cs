@@ -25,7 +25,7 @@ public class GameManager : NetworkBehaviour
     {
         GameplaySceneManager.Singleton.SceneLoadedForPlayers += SceneLoadedForPlayersHandle;
 
-        currentState = State.WAITING_PLAYERS;
+        currentState = State.BETWEEN_TURNS;
     }
 
     void Update()
@@ -39,26 +39,30 @@ public class GameManager : NetworkBehaviour
                     spawnManager.SpawnPlayers(playerOneClientId, playerTwoClientId);
                     turnManager.SetupPlayers(playerOneClientId, playerTwoClientId);
 
-                    currentState = State.WAITING_AFTER_STARTED;
+                    StartCoroutine(WaitAndStartPlayerTurn());
+
+                    currentState = State.WAITING_TO_START_TURN;
 
                     break;
                 }
-            case State.WAITING_AFTER_STARTED:
+            case State.WAITING_TO_START_TURN:
                 {
-                    StartCoroutine(WaitAndStartPlayerTurn());
-
-                    currentState = State.WAITING_PLAYERS;
-
+                    break;
+                }
+            case State.BETWEEN_TURNS:
+                {
+                    return;
+                }
+            case State.PLAYER_TURN:
+                {
                     break;
                 }
             case State.END:
                 {
+
                     break;
                 }
-            case State.WAITING_PLAYERS:
-                {
-                    break;
-                }
+            
         }
     }
 
@@ -77,6 +81,15 @@ public class GameManager : NetworkBehaviour
         yield return new WaitForSeconds(3f);
 
         turnManager.SetNextPlayerTurn();
+
+        currentState = State.PLAYER_TURN;
+    }
+
+    private IEnumerator WaitAndFinishTurns(ulong clientIdWinner)
+    {
+        yield return new WaitForSeconds(3f);
+
+        turnManager.EndTurns(clientIdWinner);
     }
 
     private void OnPlayerMakeHisMovement()
@@ -84,22 +97,51 @@ public class GameManager : NetworkBehaviour
         if (!IsServer) return;
 
         turnManager.RemoveCurrentPlayerTurn();
+
+        currentState = State.BETWEEN_TURNS;
     }
 
-    private void OnArrowCollided()
+    private void OnArrowCollided(ulong clientId, ContactPoint2D contactPoint2D, string tag)
     {
         if (!IsServer) return;
-        
-        StartCoroutine(WaitAndStartPlayerTurn());
 
-        currentState = State.WAITING_PLAYERS;
+        if (tag == "Player")
+        {
+            ulong collidedPlayer = clientId == playerOneClientId ? playerTwoClientId : playerOneClientId;
+
+            var playerController = NetworkManager.Singleton
+            .ConnectedClients[collidedPlayer]
+            .PlayerObject.GetComponent<PlayerNetworkController>();
+
+            playerController.TakeDamage(50);
+
+            if (playerController.IsDead())
+            {
+                StartCoroutine(WaitAndFinishTurns(clientId));
+
+                currentState = State.END;
+            }
+            else
+            {
+                StartCoroutine(WaitAndStartPlayerTurn());
+
+                currentState = State.WAITING_TO_START_TURN; 
+            }
+            
+        } else
+        {
+            StartCoroutine(WaitAndStartPlayerTurn());
+
+            currentState = State.WAITING_TO_START_TURN;
+        }
     }
 
     public enum State
     {
         START,
         END,
-        WAITING_PLAYERS,
-        WAITING_AFTER_STARTED
+        PLAYER_TURN,
+        BETWEEN_TURNS,
+        WAITING_TO_START_TURN
     }
 }

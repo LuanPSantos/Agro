@@ -10,16 +10,21 @@ public class BloodBehaviour : NetworkBehaviour
     {
         particle = GetComponent<ParticleSystem>();
     }
+
     void Start()
     {
-        ArrowBehaviour.ArrowCollidedWithPlayer += ArrowCollidedWithPlayerHandle;
+        ArrowBehaviour.ArrowCollided += ArrowCollidedWithPlayerHandle;
     }
 
-    private void ArrowCollidedWithPlayerHandle(ContactPoint2D contactPoint2D)
+    private void ArrowCollidedWithPlayerHandle(ulong clientId, ContactPoint2D contactPoint2D, string tag)
     {
         if (!IsServer) return;
 
-        SpawnBloodClientRpc(contactPoint2D.point, contactPoint2D.normal);
+        if(tag == "Player")
+        {
+            SpawnBloodClientRpc(contactPoint2D.point, contactPoint2D.normal);
+        }
+        
     }
 
     [ClientRpc]

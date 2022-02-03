@@ -21,6 +21,16 @@ public class TurnManager : NetworkBehaviour
         currentPlayerIndex = Random.Range(0, 2);
     }
 
+    public void EndTurns(ulong winner)
+    {
+        NetworkLog.LogInfoServer("EndTurns");
+
+        SetEnablePlayerToPlay(players[0], false);
+        SetEnablePlayerToPlay(players[1], false);
+
+        MakeCameraLookToPlayerClientRpc(winner);
+    }
+
     public void SetNextPlayerTurn()
     {
         int nextPlayerIndex = GetNextPlayerIndex();
@@ -38,6 +48,11 @@ public class TurnManager : NetworkBehaviour
     public void RemoveCurrentPlayerTurn()
     {
         SetEnablePlayerToPlay(players[currentPlayerIndex], false);
+    }
+
+    public ulong GetCurrentPlayerCliendId()
+    {
+        return players[currentPlayerIndex];
     }
 
     private int GetNextPlayerIndex()
