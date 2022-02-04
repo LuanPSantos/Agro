@@ -15,12 +15,13 @@ public class PlayerNetworkController : NetworkBehaviour
     private NetworkVariable<bool> canPlay = new NetworkVariable<bool>(false);
     private NetworkVariable<int> currentHeath = new NetworkVariable<int>();
 
+    void Awake()
+    {
+        playerColliders = GetComponentsInChildren<Collider2D>();
+        bowController = GetComponent<BowController>();
+    }
     void Start()
     {
-
-        playerColliders = GetComponentsInChildren<Collider2D>();
-        bowController = GetComponent<BowController>(); 
-
         bowController.enabled = false;
         bowController.SetClientId(clientId.Value);
 
@@ -46,9 +47,13 @@ public class PlayerNetworkController : NetworkBehaviour
             NetworkLog.LogInfoServer("OnNetworkSpawn id=" + clientId.Value);
             CameraManager.Singleton.AddPlayerTransform(clientId.Value, transform);
             CameraManager.Singleton.AddPlayerToTargetGroup(clientId.Value);
+ 
+            NicknameSetter();
         }
 
-        if(IsServer)
+       
+
+        if (IsServer)
         {
             currentHeath.Value = maxHealth;
         }
@@ -84,5 +89,22 @@ public class PlayerNetworkController : NetworkBehaviour
     public bool IsDead()
     {
         return currentHeath.Value == 0;
+    }
+
+    private void NicknameSetter()
+    {
+        string nickname = PlayerPrefs.GetString("nickname");
+
+        Debug.Log("==> " + nickname);
+
+        SetPlayerNicknameServerRpc(clientId.Value, nickname);
+    }
+
+    [ServerRpc(RequireOwnership = false)]
+    private void SetPlayerNicknameServerRpc(ulong cliendId, string nickname)
+    {
+        if (!IsServer) return;
+
+        PlayerPrefs.SetString(cliendId.ToString(), nickname);
     }
 }

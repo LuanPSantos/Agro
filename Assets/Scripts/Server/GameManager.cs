@@ -2,10 +2,13 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using Unity.Netcode;
+using System;
+
 public class GameManager : NetworkBehaviour
 {
     public State currentState;
 
+    private UIManager uiManager;
     private SpawnManager spawnManager;
     private TurnManager turnManager;
 
@@ -59,7 +62,6 @@ public class GameManager : NetworkBehaviour
                 }
             case State.END:
                 {
-
                     break;
                 }
             
@@ -119,6 +121,12 @@ public class GameManager : NetworkBehaviour
             {
                 StartCoroutine(WaitAndFinishTurns(clientId));
 
+                var nickname = PlayerPrefs.GetString(clientId.ToString());
+
+                Debug.Log("NICK " + nickname);
+
+                ShowWinnerNicknameClientRpc(nickname);
+
                 currentState = State.END;
             }
             else
@@ -134,6 +142,12 @@ public class GameManager : NetworkBehaviour
 
             currentState = State.WAITING_TO_START_TURN;
         }
+    }
+
+    [ClientRpc]
+    private void ShowWinnerNicknameClientRpc(string nickname)
+    {
+        UIManager.Singleton.ShowEndGamePanel(nickname);  
     }
 
     public enum State

@@ -9,6 +9,7 @@ public class StartNetworkManager : MonoBehaviour
 {
     public TMP_InputField code;
     public TMP_Text status;
+    public TMP_InputField playerNicknameInput;
 
     public bool runLocal = true;
 
@@ -24,6 +25,8 @@ public class StartNetworkManager : MonoBehaviour
 
     public void StartHostOrClient()
     {
+        SavePlayerNickname(playerNicknameInput.text);
+
         if (HasCode())
         {
             StartClient();   
@@ -56,5 +59,10 @@ public class StartNetworkManager : MonoBehaviour
     private bool HasCode()
     {
         return !string.IsNullOrEmpty(code.text);
+    }
+
+    private void SavePlayerNickname(string nickname)
+    {
+        PlayerPrefs.SetString("nickname", nickname);
     }
 }

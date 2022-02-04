@@ -333,7 +333,8 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   code: {fileID: 119419639}
   status: {fileID: 1217309769}
-  runLocal: 1
+  playerNicknameInput: {fileID: 1686942261}
+  runLocal: 0
 --- !u!114 &87217338
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -813,7 +814,7 @@ MonoBehaviour:
   LogLevel: 1
   NetworkConfig:
     ProtocolVersion: 0
-    NetworkTransport: {fileID: 221840575}
+    NetworkTransport: {fileID: 221840578}
     PlayerPrefab: {fileID: 0}
     NetworkPrefabs:
     - Override: 0
@@ -867,7 +868,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 6960e84d07fb87f47956e7a81d71c4e6, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  m_ProtocolType: 0
+  m_ProtocolType: 1
   m_MaxPacketQueueSize: 128
   m_MaxPayloadSize: 6144
   m_MaxSendQueueSize: 98304
